@@ -1,6 +1,9 @@
 {
   "name": "karma-front-end",
   "version": "0.0.0",
+  "engines": {
+    "node": ">=20.9.0"
+  },
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -10,6 +13,7 @@
   },
   "private": true,
   "dependencies": {
+    "@abacritt/angularx-social-login": "^2.3.0",
     "@angular/animations": "^18.2.0",
     "@angular/common": "^18.2.0",
     "@angular/compiler": "^18.2.0",
