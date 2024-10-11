@@ -13,15 +13,15 @@ export class BackendService {
   constructor(private http: HttpClient) { }
 
   getAllItems():Observable<Item[]>{
-    return this.http.get<Item[]>(`${this.url}api/Items`)
+    return this.http.get<Item[]>(`https://karmabackend.azurewebsites.net/api/Item`)
   }
 
   addItem(i:Item):Observable<Item>{
-    return this.http.post<Item>(`${this.url}api/Items`, i)
+    return this.http.post<Item>(`https://karmabackend.azurewebsites.net/api/Item`, i)
   }
 
   addUser(u:User):Observable<User>{
-    return this.http.post<User>(`${this.url}api/Users`, u)
+    return this.http.post<User>(`https://karmabackend.azurewebsites.net/api/User`, u)
   }
 
 }

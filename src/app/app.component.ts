@@ -33,7 +33,7 @@ export class AppComponent {
           userName: this.googleUser.name,
           profilePic: this.googleUser.photoUrl
         };
-        this.backendService.addUser(u).subscribe(response => console.log(response));
+        this.backendService.addUser(u).subscribe(response => {console.log(response)});
       }
     })
   }
