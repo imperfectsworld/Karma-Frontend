@@ -19,6 +19,8 @@ export class AppComponent {
   formItem: Item = {} as Item;
   googleUser: SocialUser = {} as SocialUser;
   loggedIn: boolean = false;
+  fileName = '';
+  selectedFile: File | null = null;
 
   constructor(private backendService: BackendService, private socialAuthServiceConfig: SocialAuthService){}
 
@@ -33,7 +35,7 @@ export class AppComponent {
           userName: this.googleUser.name,
           profilePic: this.googleUser.photoUrl
         };
-        this.backendService.addUser(u).subscribe(response => {console.log(response)});
+        this.backendService.addUser(u).subscribe(response => console.log(response));
       }
     })
   }
@@ -49,15 +51,39 @@ export class AppComponent {
     });
   }
 
-  addItem(){
-    this.formItem.googleId = this.googleUser.id;
-    this.backendService.addItem(this.formItem).subscribe(response=>{
-      console.log(response);
-      this.getAll();
-      this.formItem = {} as Item;
-    });
-  }
 
+  onFileSelected(event: any): void{
+    const file:File = event.target.files[0];
+    if(file){
+      this.selectedFile = file;
+    }
+  }
+  addItem(): void{
+
+    if (this.googleUser) {
+      const formData = new FormData();
+      
+      // Add text fields to FormData
+      formData.append('name', this.formItem.name);
+      formData.append('description', this.formItem.description);
+      formData.append('condition', this.formItem.condition);
+      formData.append('categories', this.formItem.categories);
+      formData.append('googleId', this.googleUser.id);
+
+      // Add the file to FormData
+      if (this.selectedFile) {
+        formData.append('pic', this.selectedFile, this.selectedFile.name);
+      }
+
+      // Different method for handling multipart form-data in your BackendService
+      this.backendService.addItemWithImage(formData).subscribe(response => {
+        console.log(response);
+        this.getAll();
+        this.formItem = {} as Item;
+        this.selectedFile = null; // Reset file input after upload
+      });
+    }
+  }
 
 
 }
