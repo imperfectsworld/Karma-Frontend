@@ -13,7 +13,9 @@
   <p>Item description: <input type="text" [(ngModel)]="formItem.description" /></p>
   <p>Item condition: <input type="text" [(ngModel)]="formItem.condition" /></p>
   <p>Item categories: <input type="text" [(ngModel)]="formItem.categories" /></p>
-  <input type="file" class="file-input" (change)="onFileSelected($event)" />
+  <input type="file" class="file-input" />
+
+
   <button (click)="addItem()">Add</button>
 }
 @else {

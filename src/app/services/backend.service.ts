@@ -13,19 +13,19 @@ export class BackendService {
   constructor(private http: HttpClient) { }
 
   getAllItems():Observable<Item[]>{
-    return this.http.get<Item[]>(`${this.url}api/Items`)
+    return this.http.get<Item[]>(`${this.url}/api/Item`)
   }
 
   addItem(i:Item):Observable<Item>{
-    return this.http.post<Item>(`${this.url}api/Items`, i)
+    return this.http.post<Item>(`${this.url}/api/Item`, i)
   }
 
   addUser(u:User):Observable<User>{
-    return this.http.post<User>(`${this.url}api/Users`, u)
+    return this.http.post<User>(`${this.url}/api/User`, u)
   }
   
-  addItemWithImage(formData: FormData): Observable<Item> {
-    return this.http.post<Item>(`${this.url}api/Items`, formData);
-  }
+  // addItemWithImage(formData: FormData): Observable<Item> {
+  //   return this.http.post<Item>(`${this.url}api/Items`, formData);
+  // }
 
 }
