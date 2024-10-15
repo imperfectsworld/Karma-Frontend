@@ -17,18 +17,15 @@ import { JoinRoomComponent } from './components/join-room/join-room.component';
 export class AppComponent {
   title = 'KarmaFront-End';
   allItems: Item[] = [];
+  
   formItem: Item = {} as Item;
+  // selectedFile: File | null = null;
+
   googleUser: SocialUser = {} as SocialUser;
   loggedIn: boolean = false;
   selectedCondition: string = "";
   selectedCategory: string = "";
-  condition = [
-    {value: "option1", label: "Mint"},
-    {value: "option2", label: "Like New"},
-    {value: "option3", label: "Used"},
-    {value: "option4", label: "Worn"},
-    {value: "option5", label: "Broken"}
-  ];
+  
   category = [
     {value: "option1", label: "Food"},
     {value: "option2", label: "Services"},
@@ -43,6 +40,19 @@ export class AppComponent {
     {value: "option11", label: "Infant Activity"},
     {value: "option8", label: "Infant Toys"}
     
+  ];
+
+  condition = [
+    {value: "option1", label: "Mint"},
+    {value: "option2", label: "Like New"},
+    {value: "option3", label: "Used"},
+    {value: "option4", label: "Worn"},
+    {value: "option5", label: "Broken"}
+  ];
+
+  foodCondition = [
+    {value: "option1", label: "Perishable"},
+    {value: "option2", label: "Non-Perishable"}
   ];
 
   constructor(private backendService: BackendService, private socialAuthServiceConfig: SocialAuthService){}
@@ -62,6 +72,24 @@ export class AppComponent {
       }
     })
   }
+
+  // onFileSelected(event: any): void {
+  //   this.selectedFile = event.target.files[0];
+  // }
+
+  // addItemWithImage(): void {
+  //   const formData = new FormData();
+  //   formData.append('file', this.selectedFile as File);
+  //   formData.append('name', this.formItem.name);
+  //   formData.append('description', this.formItem.description);
+  //   formData.append('condition', this.selectedCondition);
+  //   formData.append('category', this.selectedCategory);
+    
+  //   this.backendService.addItemWithImage(formData).subscribe(response => {
+  //     console.log('Item added successfully', response);
+  //     this.getAll();
+  //   });
+  // }
 
   signOut(): void{
     this.socialAuthServiceConfig.signOut()
