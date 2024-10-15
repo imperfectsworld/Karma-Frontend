@@ -7,7 +7,7 @@ import { BehaviorSubject } from 'rxjs';
 export class ChatService {
 
   public connection:signalR.HubConnection = new signalR.HubConnectionBuilder()
-  .withUrl("https://karmabackend.azurewebsites.net/chat")
+  .withUrl("https://localhost:7066/chat")
   .configureLogging(signalR.LogLevel.Information)
   .build();
 
