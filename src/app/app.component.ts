@@ -20,7 +20,30 @@ export class AppComponent {
   formItem: Item = {} as Item;
   googleUser: SocialUser = {} as SocialUser;
   loggedIn: boolean = false;
-  
+  selectedCondition: string = "";
+  selectedCategory: string = "";
+  condition = [
+    {value: "option1", label: "Mint"},
+    {value: "option2", label: "Like New"},
+    {value: "option3", label: "Used"},
+    {value: "option4", label: "Worn"},
+    {value: "option5", label: "Broken"}
+  ];
+  category = [
+    {value: "option1", label: "Food"},
+    {value: "option2", label: "Services"},
+    {value: "option3", label: "Furniture"},
+    {value: "option4", label: "Car Seats"},
+    {value: "option5", label: "Electronics"},
+    {value: "option6", label: "Clothing"},
+    {value: "option7", label: "Stroller"},
+    {value: "option8", label: "Nursing & Feeding"},
+    {value: "option9", label: "Playards"},
+    {value: "option10", label: "Bassinets"},
+    {value: "option11", label: "Infant Activity"},
+    {value: "option8", label: "Infant Toys"}
+    
+  ];
 
   constructor(private backendService: BackendService, private socialAuthServiceConfig: SocialAuthService){}
 
