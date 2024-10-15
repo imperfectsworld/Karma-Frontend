@@ -7,7 +7,7 @@ import { BehaviorSubject } from 'rxjs';
 export class ChatService {
 
   public connection:signalR.HubConnection = new signalR.HubConnectionBuilder()
-  .withUrl("https://localhost:7066/chat")
+  .withUrl("https://white-beach-015cbaf0f.5.azurestaticapps.net/chat")
   .configureLogging(signalR.LogLevel.Information)
   .build();
 
