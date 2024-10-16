@@ -24,8 +24,5 @@ export class BackendService {
     return this.http.post<User>(`${this.url}/api/User`, u)
   }
   
-  // addItemWithImage(formData: FormData): Observable<Item> {
-  //   return this.http.post<Item>(`${this.url}api/Items`, formData);
-  // }
 
 }
