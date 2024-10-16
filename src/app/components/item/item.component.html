@@ -1,4 +1,4 @@
-<h1>{{ userProfile.userName }} is giving away</h1>
+<h1>{{ googleUser.userName }} is giving away</h1>
 <p>Item name: <input type="text" [(ngModel)]="formItem.name" /></p>
 <p>
   Item description: <input type="text" [(ngModel)]="formItem.description" />
@@ -28,7 +28,11 @@
     }
   </select>
   }
+  
 </p>
+<input type="file" class="file-input" />
+
+  <button (click)="addItem()">Add</button>
 
 <h1>Free Items</h1>
 @for(i of allItems; track i.id){
