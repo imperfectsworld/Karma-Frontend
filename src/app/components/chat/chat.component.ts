@@ -44,7 +44,7 @@ sendMessage(){
 leaveChat(){
   this.chatService.leaveChat()
   .then(()=>{
-this.router.navigate(['app-root']);
+this.router.navigate(['/user']);
 setTimeout(()=>{
   location.reload();
 },0);

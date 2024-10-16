@@ -2,7 +2,7 @@ import { GoogleSigninButtonModule, SocialAuthService, SocialUser } from '@abacri
 import { Component, EventEmitter, Output } from '@angular/core';
 import { BackendService } from '../../services/backend.service';
 import { User } from '../../models/user';
-import { ActivatedRoute, RouterOutlet } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule, RouterOutlet } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { JoinRoomComponent } from '../join-room/join-room.component';
 import { ItemComponent } from '../item/item.component';
@@ -10,7 +10,7 @@ import { ItemComponent } from '../item/item.component';
 @Component({
   selector: 'app-user',
   standalone: true,
-  imports: [RouterOutlet,FormsModule,JoinRoomComponent,GoogleSigninButtonModule,ItemComponent],
+  imports: [RouterOutlet,RouterModule,FormsModule,JoinRoomComponent,GoogleSigninButtonModule,ItemComponent],
   templateUrl: './user.component.html',
   styleUrl: './user.component.css'
 })
@@ -18,7 +18,7 @@ export class UserComponent {
   googleUser: SocialUser = {} as SocialUser;
   loggedIn: boolean = false;
   @Output() userLoggedIn: EventEmitter<User> = new EventEmitter<User>();
-  constructor(private activateRoute:ActivatedRoute,private backendService: BackendService, private socialAuthServiceConfig: SocialAuthService){}
+  constructor(private activateRoute:ActivatedRoute,private router:Router,private backendService: BackendService, private socialAuthServiceConfig: SocialAuthService){}
 
   ngOnInit(){
     this.socialAuthServiceConfig.authState.subscribe((userResponse: SocialUser) => {
@@ -37,6 +37,9 @@ export class UserComponent {
   }
   signOut(): void{
     this.socialAuthServiceConfig.signOut()
+  }
+  navigateToJoinRoom() {
+    this.router.navigate(['/join-room']);
   }
 
 }
