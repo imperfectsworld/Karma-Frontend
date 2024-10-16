@@ -17,8 +17,9 @@ import { GetlocationService } from '../../services/getlocation.service';
 })
 export class ItemComponent {
   
-  
-  constructor(private backendService: BackendService, private socialAuthServiceConfig: SocialAuthService, private userComponent: UserComponent){}
+  lat:number |null =null;
+  long:number |null =null;
+  constructor(private backendService: BackendService, private socialAuthServiceConfig: SocialAuthService, private userComponent: UserComponent,private getlocationservice:GetlocationService){}
   @Input() googleUser: User = {} as User;
 
   
@@ -80,7 +81,6 @@ export class ItemComponent {
   }
 
   addItem(){
-    if (!this.formItem.geoCode) { alert('Please enter an address.'); return; }
     this.formItem.googleId = this.googleUser.googleId;
     this.backendService.addItem(this.formItem).subscribe(response=>{
       console.log(response);
@@ -89,9 +89,20 @@ export class ItemComponent {
     });
   
     
-
-
-  }
  
 }
+getCoordinates():void {
+  if (!this.formItem.geoCode) {
+    alert('Please enter an address.');
+    return;
+  }
+  this.getlocationservice.getLocation(this.formItem.geoCode).subscribe(response =>{
+    console.log(response);
+    const location = response.results[0].geometry.location;
+    this.lat = location.lat;
+    this.long = location.lng;
 
+  })
+}
+
+}

@@ -12,10 +12,10 @@ export class GetlocationService {
   constructor(private http: HttpClient) {}
 
 
- getLocation(address:string):Observable<Location[]> {
+ getLocation(address:string):Observable<any> {
 
   const requestUrl = `${this.url}?address=${address}&key=${this.apiKey}`;
-  return this.http.get<Location[]>(requestUrl);
+  return this.http.get<any>(requestUrl);
 
  }
 
