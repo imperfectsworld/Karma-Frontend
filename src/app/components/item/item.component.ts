@@ -6,6 +6,7 @@ import { Item } from '../../models/item';
 import { FormsModule } from '@angular/forms';
 import { ChatComponent } from '../chat/chat.component';
 import { UserComponent } from '../user/user.component';
+
 @Component({
   selector: 'app-item',
   standalone: true,
@@ -14,14 +15,20 @@ import { UserComponent } from '../user/user.component';
   styleUrl: './item.component.css'
 })
 export class ItemComponent {
+  
   constructor(private backendService: BackendService, private socialAuthServiceConfig: SocialAuthService, private userComponent: UserComponent){}
   @Input() googleUser: User = {} as User;
+
+  
   allItems: Item[] = [];
   userProfile: User = {} as User;
+  
   formItem: Item = {} as Item;
   selectedFile: File | null = null;
+  
   selectedCondition: string = "";
   selectedCategory: string = "";
+  
   category = [
     {value: "option1", label: "Food"},
     {value: "option2", label: "Services"},
@@ -35,7 +42,9 @@ export class ItemComponent {
     {value: "option10", label: "Bassinets"},
     {value: "option11", label: "Infant Activity"},
     {value: "option8", label: "Infant Toys"}
+    
   ];
+
   condition = [
     {value: "option1", label: "Mint"},
     {value: "option2", label: "Like New"},
@@ -43,25 +52,31 @@ export class ItemComponent {
     {value: "option4", label: "Worn"},
     {value: "option5", label: "Broken"}
   ];
+
   foodCondition = [
     {value: "option1", label: "Perishable"},
     {value: "option2", label: "Non-Perishable"}
   ];
+
   ngOnInit(){
     this.getAll();
   }
+
   onFileSelected(event: any): void {
     this.selectedFile = event.target.files[0];
   }
+
   signOut(): void{
     this.socialAuthServiceConfig.signOut()
   }
+
   getAll(){
     this.backendService.getAllItems().subscribe(response=> {
       console.log(response);
       this.allItems = response;
     });
   }
+
   addItem(){
     this.formItem.googleId = this.googleUser.googleId;
     this.backendService.addItem(this.formItem).subscribe(response=>{
@@ -69,5 +84,8 @@ export class ItemComponent {
       this.getAll();
       this.formItem = {} as Item;
     });
+  
   }
+ 
 }
+

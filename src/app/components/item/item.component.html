@@ -28,11 +28,10 @@
     }
   </select>
   }
-  
-</p>
-<input type="file" class="file-input" />
 
+  <input type="file" class="file-input" />
   <button (click)="addItem()">Add</button>
+</p>
 
 <h1>Free Items</h1>
 @for(i of allItems; track i.id){
@@ -40,5 +39,7 @@
 <p>{{ i.name }}</p>
 <p>{{ i.description }}</p>
 <p>{{ i.condition }}</p>
-<p>Posted by {{ i.google.userName }}</p>
+@if(i.google != null){
+  <p>Posted by {{ i.google.userName }}</p>
+  }
 }
