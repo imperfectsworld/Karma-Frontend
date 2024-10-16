@@ -6,6 +6,7 @@ import { Item } from '../../models/item';
 import { FormsModule } from '@angular/forms';
 import { ChatComponent } from '../chat/chat.component';
 import { UserComponent } from '../user/user.component';
+import { GetlocationService } from '../../services/getlocation.service';
 
 @Component({
   selector: 'app-item',
@@ -15,6 +16,7 @@ import { UserComponent } from '../user/user.component';
   styleUrl: './item.component.css'
 })
 export class ItemComponent {
+  
   
   constructor(private backendService: BackendService, private socialAuthServiceConfig: SocialAuthService, private userComponent: UserComponent){}
   @Input() googleUser: User = {} as User;
@@ -78,6 +80,7 @@ export class ItemComponent {
   }
 
   addItem(){
+    if (!this.formItem.geoCode) { alert('Please enter an address.'); return; }
     this.formItem.googleId = this.googleUser.googleId;
     this.backendService.addItem(this.formItem).subscribe(response=>{
       console.log(response);
@@ -85,6 +88,9 @@ export class ItemComponent {
       this.formItem = {} as Item;
     });
   
+    
+
+
   }
  
 }

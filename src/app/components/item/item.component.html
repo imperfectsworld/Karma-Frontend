@@ -33,12 +33,18 @@
   <button (click)="addItem()">Add</button>
 </p>
 
+
+<p>Location: <input type="text" [(ngModel)]="formItem.geoCode" /></p>
+<p> Ex: 13700 Middlebelt Rd, Livonia, MI</p>
+
+
 <h1>Free Items</h1>
 @for(i of allItems; track i.id){
 <img [src]="i.pic" />
 <p>{{ i.name }}</p>
 <p>{{ i.description }}</p>
 <p>{{ i.condition }}</p>
+<p>{{i.geoCode}}</p>
 @if(i.google != null){
   <p>Posted by {{ i.google.userName }}</p>
   }
