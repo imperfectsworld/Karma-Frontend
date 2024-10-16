@@ -21,8 +21,7 @@ export class AppComponent {
   formItem: Item = {} as Item;
   // selectedFile: File | null = null;
 
-  googleUser: SocialUser = {} as SocialUser;
-  loggedIn: boolean = false;
+  
   selectedCondition: string = "";
   selectedCategory: string = "";
   
@@ -55,24 +54,7 @@ export class AppComponent {
     {value: "option2", label: "Non-Perishable"}
   ];
 
-  constructor(private backendService: BackendService, private socialAuthServiceConfig: SocialAuthService){}
-
-  ngOnInit(){
-    this.getAll();
-    this.socialAuthServiceConfig.authState.subscribe((userResponse: SocialUser) => {
-      this.googleUser = userResponse;
-      this.loggedIn = (userResponse != null);
-      if(this.loggedIn == true){
-        let u:User = {
-          googleId: this.googleUser.id,
-          userName: this.googleUser.name,
-          profilePic: this.googleUser.photoUrl
-        };
-        this.backendService.addUser(u).subscribe(response => {console.log(response)});
-      }
-    })
-  }
-
+  
   // onFileSelected(event: any): void {
   //   this.selectedFile = event.target.files[0];
   // }
@@ -91,9 +73,7 @@ export class AppComponent {
   //   });
   // }
 
-  signOut(): void{
-    this.socialAuthServiceConfig.signOut()
-  }
+  
 
   getAll(){
     this.backendService.getAllItems().subscribe(response=> {
