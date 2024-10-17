@@ -82,6 +82,8 @@ export class ItemComponent {
 
   addItem(){
     this.formItem.googleId = this.googleUser.googleId;
+    this.formItem.categories = this.selectedCategory; 
+    this.formItem.condition = this.selectedCondition;
     this.backendService.addItem(this.formItem).subscribe(response=>{
       console.log(response);
       this.getAll();
