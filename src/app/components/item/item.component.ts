@@ -103,8 +103,15 @@ getCoordinates():void {
     const location = response.results[0].geometry.location;
     this.lat = location.lat;
     this.long = location.lng;
+    this.formItem.geoCode = `${this.lat},${this.long}`;
 
   })
 }
+
+ openLocation(geoCode: string): void {
+ const googleMapsUrl = `https://www.google.com/maps/place/${geoCode}`;
+   window.open(googleMapsUrl, '_blank');
+}
+
 
 }

@@ -40,6 +40,7 @@
   @if(lat&&long){
 <p>Latitude:{{lat}}</p>
 <p>Longitude:{{long}}</p>
+
   }
   
 
@@ -51,6 +52,11 @@
 <p>{{ i.name }}</p>
 <p>{{ i.description }}</p>
 <p>{{ i.condition }}</p>
+
+<button (click)="openLocation(i.geoCode)" type="button">
+  Location
+</button> 
+
 @if(i.google != null){
   <p>Posted by {{ i.google.userName }}</p>
   }
