@@ -153,15 +153,15 @@ export class ItemComponent {
 uploadImage(imageFile: File) {
   const formData = new FormData();
   formData.append('image', imageFile);
-
+  
   this.backendService.uploadImage(imageFile).pipe(
     retryWhen(errors =>
       errors.pipe(
         mergeMap(error => {
           if (error.status === 429) {
             const retryAfter = parseInt(error.headers.get('Retry-After'), 10) || 60;
-            console.log(`Too many requests. Retrying after ${retryAfter} seconds.`);
-            return timer(retryAfter * 1000);
+            console.log(`429 Too Many Requests. Retrying after ${retryAfter} seconds.`);
+            return timer(retryAfter * 1000); 
           }
           return throwError(error);
         })

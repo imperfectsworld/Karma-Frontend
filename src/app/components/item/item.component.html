@@ -29,8 +29,7 @@
   </select>
   }
 
-  <input type="file" (change)="onFileSelected($event)" class="file-input" />
-  <button (click)="uploadImageAndAddItem()">Add</button>
+ 
   
 </p>
 
@@ -43,6 +42,12 @@
 <p>Longitude:{{long}}</p>
 
   }
+
+  <input type="file" (change)="onFileSelected($event)" class="file-input" />
+  @if(selectedFile){
+  <button (click)="uploadImage(selectedFile)">Upload Image</button>
+  }
+  <button (click)="addItem()">Add</button>
   
 
 

@@ -28,7 +28,7 @@ export class BackendService {
     const formData = new FormData();
     formData.append('image', file);
   
-    const imgurUrl = 'https://api.imgur.com/3/image';
+    const imgurUrl = 'https://api.imgur.com/3/image/';
     const clientId = this.getImgurClientId(); 
     
     return this.http.post<any>(imgurUrl, formData, {
