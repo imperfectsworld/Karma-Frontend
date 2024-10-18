@@ -29,8 +29,9 @@
   </select>
   }
 
-  <input type="file" class="file-input" />
-  <button (click)="addItem()">Add</button>
+  <input type="file" (change)="onFileSelected($event)" class="file-input" />
+  <button (click)="uploadImageAndAddItem()">Add</button>
+  
 </p>
 
 
@@ -48,7 +49,9 @@
 
 <h1>Free Items</h1>
 @for(i of allItems; track i.id){
-<img [src]="i.pic" />
+  @if(i.pic){
+<img [src]="i.pic"/>
+  }
 <p>{{ i.name }}</p>
 <p>{{ i.description }}</p>
 <p>{{ i.condition }}</p>

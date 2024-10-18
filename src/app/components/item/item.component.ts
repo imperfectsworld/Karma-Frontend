@@ -7,6 +7,8 @@ import { FormsModule } from '@angular/forms';
 import { ChatComponent } from '../chat/chat.component';
 import { UserComponent } from '../user/user.component';
 import { GetlocationService } from '../../services/getlocation.service';
+import { HttpHeaders } from '@angular/common/http';
+import { retryWhen, mergeMap, timer, throwError, catchError } from 'rxjs';
 
 @Component({
   selector: 'app-item',
@@ -19,6 +21,7 @@ export class ItemComponent {
   
   lat:number |null =null;
   long:number |null =null;
+  http: any;
   constructor(private backendService: BackendService, private socialAuthServiceConfig: SocialAuthService, private userComponent: UserComponent,private getlocationservice:GetlocationService){}
   @Input() googleUser: User = {} as User;
 
@@ -27,10 +30,13 @@ export class ItemComponent {
   userProfile: User = {} as User;
   
   formItem: Item = {} as Item;
-  selectedFile: File | null = null;
   
   selectedCondition: string = "";
   selectedCategory: string = "";
+
+  selectedFile: File | null = null;  // For the selected file
+  imageUrl: string | null = null;  // To store the uploaded image URL
+ 
   
   category = [
     {value: "option1", label: "Food"},
@@ -67,6 +73,27 @@ export class ItemComponent {
 
   onFileSelected(event: any): void {
     this.selectedFile = event.target.files[0];
+    this.backendService.getImgurClientId().subscribe(response => {
+      const imgurClientId = response.clientId;
+      
+      if (this.selectedFile) {
+        const formData = new FormData();
+        formData.append('image', this.selectedFile);
+  
+        const headers = new HttpHeaders({
+          Authorization: `Client-ID ${imgurClientId}`
+        });
+  
+        this.http.post('https://api.imgur.com/3/image', formData, { headers })
+          .subscribe((imgurResponse: { [x: string]: { [x: string]: any; }; }) => {
+            console.log('Imgur upload success', imgurResponse);
+            const imageUrl = imgurResponse['data']['link'];
+            this.formItem.pic = imageUrl;
+          }, (error: any) => {
+            console.error('Imgur upload failed', error);
+          });
+      }
+    });
   }
 
   signOut(): void{
@@ -80,19 +107,76 @@ export class ItemComponent {
     });
   }
 
+  uploadImageAndAddItem() {
+    if (this.selectedFile) {
+      console.log('File selected for upload:', this.selectedFile);
+  
+      const observer = {
+        next: (response: any) => {
+          console.log('Image upload response:', response);
+          if (response && response.data && response.data.link) {
+            this.imageUrl = response.data.link;
+            console.log('Image URL set:', this.imageUrl);
+            this.addItem();
+          } else {
+            console.error('Error: Image URL not found in the response');
+            alert('Failed to upload image. Please try again.');
+          }
+        },
+        error: (err: any) => {
+          console.error('Image upload failed:', err);
+          alert('Image upload failed. Please check your file and try again.');
+        },
+        complete: () => console.log('Image upload complete')
+      };
+  
+      this.backendService.uploadImage(this.selectedFile).subscribe(observer);
+    } else {
+      console.warn('No file selected for upload.');
+      this.addItem();
+    }
+  }
+
   addItem(){
     this.formItem.googleId = this.googleUser.googleId;
     this.formItem.categories = this.selectedCategory; 
     this.formItem.condition = this.selectedCondition;
+    this.formItem.pic = this.imageUrl || '';
     this.backendService.addItem(this.formItem).subscribe(response=>{
       console.log(response);
       this.getAll();
       this.formItem = {} as Item;
+      this.imageUrl = null;
     });
-  
-    
- 
 }
+
+uploadImage(imageFile: File) {
+  const formData = new FormData();
+  formData.append('image', imageFile);
+
+  this.backendService.uploadImage(imageFile).pipe(
+    retryWhen(errors =>
+      errors.pipe(
+        mergeMap(error => {
+          if (error.status === 429) {
+            const retryAfter = parseInt(error.headers.get('Retry-After'), 10) || 60;
+            console.log(`Too many requests. Retrying after ${retryAfter} seconds.`);
+            return timer(retryAfter * 1000);
+          }
+          return throwError(error);
+        })
+      )
+    ),
+    catchError(error => {
+      console.error('Image upload failed:', error);
+      return throwError(error);
+    })
+  ).subscribe(response => {
+    console.log('Image uploaded successfully:', response);
+  });
+}
+
+
 getCoordinates():void {
   if (!this.formItem.geoCode) {
     alert('Please enter an address.');
